@@ -13,11 +13,13 @@ function game () {
 }
 
 function drawFood () {
-    //clear the rectangle so the multiple food won't show up on the screen
+    // //clear the rectangle so the multiple food won't show up on the screen
     ctx.clearRect(foodX * tileCount, foodY * tileCount, tileSize, tileSize);
+
     //get new x and y position for the food
-    foodX = Math.floor(Math.random() * tileSize);
-    foodY = Math.floor(Math.random() * tileSize);
+    foodX = Math.floor(Math.random() * tileCount);
+    foodY = Math.floor(Math.random() * tileCount);
+    
     //fill the rectangle aka food
     ctx.fillStyle = "red";
     ctx.fillRect(foodX * tileCount, foodY * tileCount, tileSize, tileSize);
