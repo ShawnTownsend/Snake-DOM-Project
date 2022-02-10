@@ -29,7 +29,7 @@ function drawFood() {
   ctx.fillRect(foodX * tileCount, foodY * tileCount, tileSize, tileSize);
 }
 
-function fillRect() {
+function drawSquare() {
   ctx.beginPath();
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, 1000 + canvas.width, 1000 + canvas.height);
@@ -55,7 +55,7 @@ function onkeydown(e) {
   else if (e.keyCode == 37) { rectX--; } // left arrow
   else if (e.keyCode == 38) { rectY--; } // up arrow
   else if (e.keyCode == 40) { rectY++; } // down arrow
-  fillRect();
+  drawSquare();
 }
 
 window.addEventListener('keydown', onkeydown);
