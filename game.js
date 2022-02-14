@@ -1,13 +1,14 @@
+
 import k from './kaboom.js'
 import {food, getRandomPosition} from './food.js'
 import link from './snake-list.js'
+
 
 
 let timePerFrame = 0.09;
 let score = 0;
 let increaseSpeed = 0; 
 const audio = new Audio('https://www.mboxdrive.com/Cartoon%20Bite%20-%20Sound%20Effect%20(HD).mp3');
-
 
 function movement () {
     const direction = k.vec2(0, 0);
@@ -48,25 +49,25 @@ function movement () {
         }
     }
 }
-
-function controls () {
-    return {
-        add() {
-            k.keyPress('left', () => {
-                this.movement.left();
-            }),
-            k.keyPress('right', () => {
-                this.movement.right();
-            }),
-            k.keyPress('down', () => {
-                this.movement.down();
-            }),
-            k.keyPress('up', () => {
-                this.movement.up();
-            })
-        }
-    }
+function controls() {
+  return {
+    add() {
+      k.keyPress('left', () => {
+        this.movement.left();
+      }),
+      k.keyPress('right', () => {
+        this.movement.right();
+      }),
+      k.keyPress('down', () => {
+        this.movement.down();
+      }),
+      k.keyPress('up', () => {
+        this.movement.up();
+      });
+    },
+  };
 }
+
 
 export default function snake () {
     const spawnFood = k.add([
@@ -93,9 +94,11 @@ export default function snake () {
         k.color(255, 255, 255, 1)
     ])
 
-    k.onCollide('head', 'food', (head, food) => {
-        k.destroy(food);
-        score++;
+
+  k.onCollide('head', 'food', (head, food) => {
+    k.destroy(food);
+      
+      score++;
         scoreText.text = `Score : ${score}`;
         increaseSpeed++;
         console.log(increaseSpeed);
@@ -104,33 +107,33 @@ export default function snake () {
             timePerFrame -= 0.01;
         }
 
-        const newSegment = k.add([
-            k.pos(tail.pos.x, tail.pos.y),
-            k.rect(16, 16),
-            k.color(0, 255, 0, 1),
-            k.origin('center'),
-            k.area(),
-            link(),
-            'body'
-        ])
-        audio.play();
-    
-        tail.setSegment(newSegment);
+    const newSegment = k.add([
+      k.pos(tail.pos.x, tail.pos.y),
+      k.rect(16, 16),
+      k.color(0, 255, 0, 1),
+      k.origin('center'),
+      k.area(),
+      link(),
+      'body',
+    ]);
+    audio.play();
 
-        tail = newSegment;
+    tail.setSegment(newSegment);
 
-        spawnFood.spawn();
-    });
+    tail = newSegment;
 
-    k.onCollide('head', 'body', (head, body)  => {
-        if (body.isNew()) return;
-        k.destroyAll('head');
-        k.shake(100);
-        k.add([
-            k.pos(k.width() * 0.5, k.height() * 0.5),
-            k.text('Game Over', 40),
-            k.color(255, 0, 0, 1),
-            k.origin('center')
-        ]);
-    })
+    spawnFood.spawn();
+  });
+
+  k.onCollide('head', 'body', (head, body) => {
+    if (body.isNew()) return;
+    k.destroyAll('head');
+    k.add([
+      k.pos(k.width() * 0.5, k.height() * 0.5),
+      k.text('Game Over', 40),
+      k.color(255, 0, 0, 1),
+      k.origin('center'),
+    ]);
+    shake(12);
+  });
 }
