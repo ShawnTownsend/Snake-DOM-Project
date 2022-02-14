@@ -1,5 +1,6 @@
 import k from './kaboom.js'
-function getRandomPosition(tileWidth = 16, tileHeight = 16) {
+
+export function getRandomPosition(tileWidth = 16, tileHeight = 16) {
     
     const tilesInX = Math.floor(k.width() / tileWidth); //number of tiles in x access
                     //width of whole screen / tile width
@@ -11,7 +12,7 @@ function getRandomPosition(tileWidth = 16, tileHeight = 16) {
     return k.vec2(x, y);
     //vc 2 function(directions passed in)
 }
-export default function food () {   
+export function food () {   
     return {
         spawn () {
             k.add([
