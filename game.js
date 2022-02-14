@@ -2,9 +2,11 @@ import k from './kaboom.js'
 import {food, getRandomPosition} from './food.js'
 import link from './snake-list.js'
 
+
 let timePerFrame = 0.09;
 let score = 0;
 let increaseSpeed = 0; 
+const audio = new Audio('https://www.mboxdrive.com/Cartoon%20Bite%20-%20Sound%20Effect%20(HD).mp3');
 
 
 function movement () {
@@ -112,6 +114,8 @@ export default function snake () {
             link(),
             'body'
         ])
+        audio.play();
+    
         tail.setSegment(newSegment);
 
         tail = newSegment;
