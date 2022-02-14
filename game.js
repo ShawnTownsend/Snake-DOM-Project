@@ -1,6 +1,10 @@
 import k from './kaboom.js'
-import food from './food.js'
+import {food, getRandomPosition} from './food.js'
 import link from './snake-list.js'
+
+let timePerFrame = 0.09;
+let score = 0;
+let increaseSpeed = 0; 
 
 
 function movement () {
@@ -10,10 +14,11 @@ function movement () {
     return {
         update() {
             timeTaken += k.dt();
-            if(timeTaken < 0.25) {
+            if(timeTaken < timePerFrame) {
                 return
             }
             timeTaken = 0;
+            console.log(timePerFrame)
             this.pos.x += direction.x * speed;
             this.pos.y += direction.y * speed;
 
@@ -68,7 +73,7 @@ export default function snake () {
         k.area()
     ]);
     let tail = k.add([
-        k.pos(8, 8),
+        k.pos(getRandomPosition()),
         k.rect(16, 16),
         k.color(0, 255, 0, 1),
         k.origin('center'),
@@ -81,8 +86,22 @@ export default function snake () {
     
     spawnFood.spawn();
 
+    const scoreText = k.add([
+        k.pos(2, 2),
+        k.text(`Score : ${score}`, { size : 25 }),
+        k.color(255, 255, 255, 1)
+    ])
+
     k.onCollide('head', 'food', (head, food) => {
         k.destroy(food);
+        score++;
+        scoreText.text = `Score : ${score}`;
+        increaseSpeed++;
+        console.log(increaseSpeed);
+        if (increaseSpeed === 5) {
+            increaseSpeed = 0;
+            timePerFrame -= 0.01;
+        }
 
         const newSegment = k.add([
             k.pos(tail.pos.x, tail.pos.y),
@@ -103,6 +122,7 @@ export default function snake () {
     k.onCollide('head', 'body', (head, body)  => {
         if (body.isNew()) return;
         k.destroyAll('head');
+        k.shake(100);
         k.add([
             k.pos(k.width() * 0.5, k.height() * 0.5),
             k.text('Game Over', 40),
