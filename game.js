@@ -20,7 +20,6 @@ function movement () {
                 return
             }
             timeTaken = 0;
-            console.log(timePerFrame)
             this.pos.x += direction.x * speed;
             this.pos.y += direction.y * speed;
 
