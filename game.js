@@ -1,49 +1,54 @@
-import k from './kaboom.js';
-import food from './food.js';
-import link from './snake-list.js';
 
+import k from './kaboom.js'
+import {food, getRandomPosition} from './food.js'
+import link from './snake-list.js'
+
+
+
+let timePerFrame = 0.09;
+let score = 0;
+let increaseSpeed = 0; 
 const audio = new Audio('https://www.mboxdrive.com/Cartoon%20Bite%20-%20Sound%20Effect%20(HD).mp3');
 
-function movement() {
-  const direction = k.vec2(0, 0);
-  const speed = 16;
-  let timeTaken = 0;
-  return {
-    update() {
-      timeTaken += k.dt();
-      if (timeTaken < 0.25) {
-        return;
-      }
-      timeTaken = 0;
-      this.pos.x += direction.x * speed;
-      this.pos.y += direction.y * speed;
+function movement () {
+    const direction = k.vec2(0, 0);
+    const speed = 16;
+    let timeTaken = 0;
+    return {
+        update() {
+            timeTaken += k.dt();
+            if(timeTaken < timePerFrame) {
+                return
+            }
+            timeTaken = 0;
+            this.pos.x += direction.x * speed;
+            this.pos.y += direction.y * speed;
 
-      const segment = this.getSegment();
-      if (!segment) return;
+            const segment = this.getSegment();
+            if(!segment) return;
 
-      segment.moveUpdate(this.pos.x, this.pos.y);
-    },
-    movement: {
-      left() {
-        direction.x = -1;
-        direction.y = 0;
-      },
-      right() {
-        direction.x = 1;
-        direction.y = 0;
-      },
-      down() {
-        direction.x = 0;
-        direction.y = 1;
-      },
-      up() {
-        direction.x = 0;
-        direction.y = -1;
-      },
-    },
-  };
+            segment.moveUpdate(this.pos.x, this.pos.y)
+        },
+        movement: {
+            left() {
+                direction.x = -1;
+                direction.y = 0;
+            },
+            right() {
+                direction.x = 1;
+                direction.y = 0;
+            },
+            down() {
+                direction.x = 0;
+                direction.y = 1;
+            }, 
+            up() {
+                direction.x = 0;
+                direction.y = -1;
+            }
+        }
+    }
 }
-
 function controls() {
   return {
     add() {
@@ -63,27 +68,44 @@ function controls() {
   };
 }
 
-export default function snake() {
-  const spawnFood = k.add([
-    food(),
-    k.area(),
-  ]);
-  let tail = k.add([
-    k.pos(8, 8),
-    k.rect(16, 16),
-    k.color(0, 255, 0, 1),
-    k.origin('center'),
-    k.area(),
-    movement(),
-    controls(),
-    link(),
-    'head',
-  ]);
 
-  spawnFood.spawn();
+export default function snake () {
+    const spawnFood = k.add([
+        food(),
+        k.area()
+    ]);
+    let tail = k.add([
+        k.pos(getRandomPosition()),
+        k.rect(16, 16),
+        k.color(0, 255, 0, 1),
+        k.origin('center'),
+        k.area(),
+        movement(),
+        controls(),
+        link(),
+        'head'
+    ]);
+    
+    spawnFood.spawn();
+
+    const scoreText = k.add([
+        k.pos(2, 2),
+        k.text(`Score : ${score}`, { size : 25 }),
+        k.color(255, 255, 255, 1)
+    ])
+
 
   k.onCollide('head', 'food', (head, food) => {
     k.destroy(food);
+      
+      score++;
+        scoreText.text = `Score : ${score}`;
+        increaseSpeed++;
+        console.log(increaseSpeed);
+        if (increaseSpeed === 5) {
+            increaseSpeed = 0;
+            timePerFrame -= 0.01;
+        }
 
     const newSegment = k.add([
       k.pos(tail.pos.x, tail.pos.y),
