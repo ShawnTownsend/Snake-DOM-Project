@@ -2,6 +2,8 @@ import k from './kaboom.js'
 import food from './food.js'
 import link from './snake-list.js'
 
+const audio = new Audio('https://www.mboxdrive.com/Cartoon%20Bite%20-%20Sound%20Effect%20(HD).mp3');
+
 
 function movement () {
     const direction = k.vec2(0, 0);
@@ -93,6 +95,8 @@ export default function snake () {
             link(),
             'body'
         ])
+        audio.play();
+    
         tail.setSegment(newSegment);
 
         tail = newSegment;
