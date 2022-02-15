@@ -1,5 +1,6 @@
 import k from './kaboom.js'
 
+loadSprite('food', 'pizza.png')
 export function getRandomPosition(tileWidth = 16, tileHeight = 16) {
     
     const tilesInX = Math.floor(k.width() / tileWidth); //number of tiles in x access
@@ -17,8 +18,7 @@ export function food () {
         spawn () {
             k.add([
                 k.pos(getRandomPosition()),
-                k.rect(16, 16), //draw rectangle.
-                k.color(0, 0, 255, 1), //all BLUE
+                k.sprite('food'),
                 k.origin('center'), //specific area will be labelled food
                 k.area(),
                 'food'
