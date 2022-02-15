@@ -2,13 +2,15 @@
 import k from './kaboom.js'
 import {food, getRandomPosition} from './food.js'
 import link from './snake-list.js'
-
-
+// import level from './levels.js'
 
 let timePerFrame = 0.09;
 let score = 0;
 let increaseSpeed = 0; 
 const audio = new Audio('https://www.mboxdrive.com/Cartoon%20Bite%20-%20Sound%20Effect%20(HD).mp3');
+
+loadSprite('snake', 'snake-skin.png');
+
 
 function movement () {
     const direction = k.vec2(0, 0);
@@ -70,14 +72,14 @@ function controls() {
 
 
 export default function snake () {
+
     const spawnFood = k.add([
         food(),
         k.area()
     ]);
     let tail = k.add([
+        k.sprite('snake'),
         k.pos(getRandomPosition()),
-        k.rect(16, 16),
-        k.color(0, 255, 0, 1),
         k.origin('center'),
         k.area(),
         movement(),
@@ -108,8 +110,7 @@ export default function snake () {
 
     const newSegment = k.add([
       k.pos(tail.pos.x, tail.pos.y),
-      k.rect(16, 16),
-      k.color(0, 255, 0, 1),
+      sprite('snake'),
       k.origin('center'),
       k.area(),
       link(),
@@ -139,12 +140,12 @@ export default function snake () {
         k.text('Press Enter to replay', { size : 20 }),
         k.color(255, 255, 255, 1),
         k.origin('center')
-])
+    ]);
     k.keyPress('enter', () => {
         timePerFrame = 0.09;
         score = 0;
         increaseSpeed = 0;
         k.go('snake');
-    })
+    });
   });
 }
