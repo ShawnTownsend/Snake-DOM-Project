@@ -1,6 +1,6 @@
 
 import k from './kaboom.js'
-import {food, getRandomPosition} from './food.js'
+import {food, getRandomPosition, } from './food.js'
 import link from './snake-list.js'
 
 
