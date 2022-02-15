@@ -134,5 +134,17 @@ export default function snake () {
       k.origin('center'),
     ]);
     shake(12);
+    k.add([
+        k.pos(k.width() * 0.5, k.height() * 0.5 + 50),
+        k.text('Press Enter to replay', { size : 20 }),
+        k.color(255, 255, 255, 1),
+        k.origin('center')
+])
+    k.keyPress('enter', () => {
+        timePerFrame = 0.09;
+        score = 0;
+        increaseSpeed = 0;
+        k.go('snake');
+    })
   });
 }
