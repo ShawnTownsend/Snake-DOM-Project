@@ -98,14 +98,13 @@ export default function snake () {
   k.onCollide('head', 'food', (head, food) => {
     k.destroy(food);
       
-      score++;
-        scoreText.text = `Score : ${score}`;
-        increaseSpeed++;
-        console.log(increaseSpeed);
-        if (increaseSpeed === 5) {
+    score++;
+    scoreText.text = `Score : ${score}`;
+    increaseSpeed++;
+    if (increaseSpeed === 5) {
             increaseSpeed = 0;
             timePerFrame -= 0.01;
-        }
+    }
 
     const newSegment = k.add([
       k.pos(tail.pos.x, tail.pos.y),
